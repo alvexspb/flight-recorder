@@ -48,6 +48,11 @@ public class ParamAssigner : MonoBehaviour {
 
 }
 
+public enum VectorElement {
+	X, Y, Z
+}
+
+
 public enum AssignParameter{
 	POSITION, ROTATION
 }

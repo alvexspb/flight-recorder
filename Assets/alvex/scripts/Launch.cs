@@ -132,6 +132,6 @@ public class Launch : MonoBehaviour {
 
 	IEnumerator screenshot() {
 		yield return new WaitForEndOfFrame();
-		trackingCamera.GetComponent<ScreenRecorder> ().CaptureScreenshot (startDate, leftFrameIndex);
+		trackingCamera.GetComponentInChildren<ScreenRecorder> ().CaptureScreenshot (startDate, leftFrameIndex);
 	}
 }
