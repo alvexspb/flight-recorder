@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 // Put this script on a Camera
 public class Gizmos : MonoBehaviour {
@@ -12,65 +13,94 @@ public class Gizmos : MonoBehaviour {
 		new Color(0, 0, 1f)
 	};
 
-	public int size = 5;
-	public GameObject parent;
+	public float zeroGizmosLength = 10;
+	public float objectGizmosLength = 5;
 
+	public GameObject parent;
 
 	Vector3 rotate(Vector3 point, Quaternion rotate, Vector3 around) {
 		return rotate * (point - around) + around;
 	}
 
-	void DrawArrow (Vector3 from, Quaternion rot, int size, Color c) {
-		Vector3 colorVector = new Vector3 (c.r, c.g, c.b);
-		Vector3 modifier = Vector3.one - colorVector;
-	
-		Vector3 to = from + colorVector * size;
-		Vector3 to1 = to - colorVector;
+	void gizmo (Vector3 startPoint, Quaternion rotation, float arrowLength, Color color) {
+		
+		Vector3 colorVector = new Vector3 (color.r, color.g, color.b);
+		Vector3 endPoint = startPoint + colorVector * arrowLength;
+		DrawLine (startPoint, endPoint, color, rotation);
 
-		DrawLine (from, to, c, rot);
-		DrawTriangle (to, to1+modifier*0.15f, to1-modifier*0.15f, c, rot, from);
+		Vector3 arrowConeBasePoint = endPoint - colorVector;
+		List<Vector3> circle = circlePoints (arrowConeBasePoint, colorVector);
+		for(int i = 0; i < circle.Count; i++) {
+			DrawTriangle (endPoint, circle[i], circle[i == circle.Count - 1 ? 0 : i + 1], color, rotation, startPoint);	
+		}
 
 	}
 
+	List<Vector3> circlePoints(Vector3 center, Vector3 axis) {
+		List<Vector3> points = new List<Vector3> ();
+		for (int i = 0; i < 360; i += 30) {
+			float rad = i * Mathf.Deg2Rad;
+			float sin = Mathf.Sin (rad) * 0.2f;
+			float cos = Mathf.Cos (rad) * 0.2f;
+			points.Add (center + new Vector3 (
+				1 == axis.x ? 0 : sin,
+				1 == axis.y ? 0 : 1 == axis.x ? sin : cos,
+				1 == axis.z ? 0 : cos
+			));
+		}
+		return points;
+	}
 
-	void singleGizmos (Vector3 from, Quaternion rot, int size) {
+
+
+	void gizmos (Vector3 from, Quaternion rot, float size) {
 		foreach (Color c in colors) {
-			DrawArrow (from, rot, size, c);
+			gizmo (from, rot, size, c);
 		}
 	}
 
-	void DrawLine (Vector3 from, Vector3 to, Color c, Quaternion rot) {
-		to = rotate (to, rot, from);
+	void vertex (Vector3 vertex){
+		GL.Vertex3 (vertex.x, vertex.y, vertex.z);
+	}
+
+	void DrawLine (Vector3 fromPoint, Vector3 toPoint, Color color, Quaternion rotation) {
+		toPoint = rotate (toPoint, rotation, fromPoint);
 		GL.Begin (GL.LINES);
-		GL.Color (c);
-		GL.Vertex3 (from.x, from.y, from.z);
-		GL.Vertex3 (to.x, to.y, to.z);
+		GL.Color (color);
+		vertex (fromPoint);
+		vertex (toPoint);
 		GL.End ();
 	}
 
 	void DrawTriangle (Vector3 a, Vector3 b, Vector3 c, Color color, Quaternion rot, Vector3 around) {
-		Vector3 a1 = rotate (a, rot, around);
-		Vector3 b1 = rotate (b, rot, around);
-		Vector3 c1 = rotate (c, rot, around);
 		GL.Begin (GL.TRIANGLES);
 		GL.Color (color);
-		GL.Vertex3 (a1.x, a1.y, a1.z);
-		GL.Vertex3 (b1.x, b1.y, b1.z);
-		GL.Vertex3 (c1.x, c1.y, c1.z);
+		vertex(rotate (a, rot, around));
+		vertex(rotate (b, rot, around));
+		vertex(rotate (c, rot, around));
 		GL.End ();
 	}
 
-	void DrawAllGizmos() {
+	void draw() {
 		ensureMaterial ();
 
-		singleGizmos(Vector3.zero, Quaternion.Euler(Vector3.zero), 10);
-
-		if(parent) {
-			foreach (Target target in parent.GetComponentsInChildren<Target> ()) {
-				Transform t = target.model.GetChild (0).transform;
-				singleGizmos (t.position, t.localRotation, size);
-			}
+		if (zeroGizmosLength > 0) {
+			gizmos(Vector3.zero, Quaternion.Euler(Vector3.zero), zeroGizmosLength);
 		}
+
+		if(parent == null || objectGizmosLength == 0) {
+			return;
+		}
+
+		foreach (Target target in parent.GetComponentsInChildren<Target> ()) {
+			if (target.model.transform.childCount == 0) {
+				continue;
+			}
+
+			Transform t = target.model.GetChild (0).transform;
+			gizmos (t.position, t.localRotation, objectGizmosLength);
+		}
+
 	}
 
 	static void ensureMaterial () {
@@ -82,11 +112,11 @@ public class Gizmos : MonoBehaviour {
 
 	// To show the lines in the game window whne it is running
 	void OnPostRender() {
-		DrawAllGizmos();
+		draw();
 	}
 
 	// To show the lines in the editor
 	void OnDrawGizmos() {
-		DrawAllGizmos();
+		draw();
 	}
 }

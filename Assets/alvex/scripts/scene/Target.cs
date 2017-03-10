@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Target : MonoBehaviour {
 
@@ -24,19 +25,25 @@ public class Target : MonoBehaviour {
 	}
 
 	public void LoadModel(string path) {
+		
 		if (currentState.model == path) {
 			return;
 		}
 
 		DestroyChildren (model);
 
-		mesh = OBJLoader.LoadOBJFile (path).transform;
-		mesh.parent = model;
-		mesh.localScale = Vector3.one;
-		mesh.localPosition = Vector3.zero;
-		mesh.localEulerAngles = Vector3.zero;
+		try {
+			mesh = OBJLoader.LoadOBJFile (path).transform;
+			mesh.parent = model;
+			mesh.localScale = Vector3.one;
+			mesh.localPosition = Vector3.zero;
+			mesh.localEulerAngles = Vector3.zero;
+			currentState.model = path;
+		} catch (Exception e) {
+			Debug.Log (e);
+		}
 
-		currentState.model = path;
+
 	}
 
 	public void LoadMarkers (string path) {
@@ -82,14 +89,14 @@ public class Target : MonoBehaviour {
 	}
 
 	public void Translate (Vector3 modelCenter) {
-		mesh.localPosition = modelCenter;
+		if (null != mesh) mesh.localPosition = modelCenter;
 	}
 
 	public void Rotate (Vector3 modelRotation) {
-		mesh.localEulerAngles = modelRotation;
+		if (null != mesh) mesh.localEulerAngles = modelRotation;
 	}
 
 	public void Scale (float scale) {
-		mesh.localScale = new Vector3 (scale, scale, scale);
+		if (null != mesh) mesh.localScale = new Vector3 (scale, scale, scale);
 	}
 }
