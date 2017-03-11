@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44950032, g: 0.49649417, b: 0.5591476, a: 1}
+  m_IndirectSpecularColor: {r: 0.44950056, g: 0.4964925, b: 0.55914634, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -257,7 +257,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1298517187}
+    m_TransformParent: {fileID: 622158238}
     m_Modifications:
     - target: {fileID: 114754874429075504, guid: eb79067b50ae3924ead45216187542e0,
         type: 2}
@@ -312,12 +312,12 @@ Prefab:
     - target: {fileID: 224962543287008564, guid: eb79067b50ae3924ead45216187542e0,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -59
       objectReference: {fileID: 0}
     - target: {fileID: 224962543287008564, guid: eb79067b50ae3924ead45216187542e0,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -120
+      value: -217
       objectReference: {fileID: 0}
     - target: {fileID: 224962543287008564, guid: eb79067b50ae3924ead45216187542e0,
         type: 2}
@@ -1252,8 +1252,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 375602875}
-  m_LocalRotation: {x: -0, y: 0.000000063325004, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.86, z: -30}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 742.69556, y: 444.83838, z: -1774.1523}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1037051818}
@@ -1564,6 +1564,7 @@ RectTransform:
   - {fileID: 1315314158}
   - {fileID: 1641043585}
   - {fileID: 1187965973}
+  - {fileID: 1033101010}
   - {fileID: 674465123}
   m_Father: {fileID: 2113339989}
   m_RootOrder: 1
@@ -1735,7 +1736,7 @@ RectTransform:
   - {fileID: 441097101}
   - {fileID: 222353504}
   m_Father: {fileID: 622158238}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -3426,7 +3427,6 @@ RectTransform:
   - {fileID: 1609176851}
   - {fileID: 1809702852}
   - {fileID: 1607776280}
-  - {fileID: 1033101010}
   m_Father: {fileID: 1017197470}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

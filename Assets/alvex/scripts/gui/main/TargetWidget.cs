@@ -35,9 +35,13 @@ public class TargetWidget : MonoBehaviour {
 		this.targetDescription = targetDescription;
 		UpdateIcon ();
 	}
+
+	public void DeleteTarget() {
+		GetComponentInParent<TargetsPanel> ().DeleteTarget (targetDescription);
+	}
 	
 	public void SetTargetName (int index) {
-		gameObject.name = "TargetWidget" + index;
-		GetComponentInChildren<Text> ().text = "Цель " + (index+1);
+		gameObject.name = "TargetWidget_" + index;
+		GetComponentInChildren<Text> ().text = (index + 1).ToString();
 	}
 }

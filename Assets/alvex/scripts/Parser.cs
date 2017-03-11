@@ -63,7 +63,7 @@ public class Parser  {
 				theReader.Close();
 			}
 		} catch (Exception e) {
-			Debug.Log(e.Message);
+			Debug.Log(e.Message + ", 0 values loaded");
 		}
 		return values;
 	}

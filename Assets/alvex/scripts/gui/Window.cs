@@ -11,9 +11,6 @@ public class Window : MonoBehaviour {
 
 	void Start () {
 		hiddenPosition = GetComponent<RectTransform> ().anchoredPosition;
-		if (parent == null) {
-			lastOpenedWindow = this;
-		}
 	}
 
 	void Update () {
@@ -39,6 +36,14 @@ public class Window : MonoBehaviour {
 	}
 
 	public void ToggleLastOpenedWindow () {
+		if (null == lastOpenedWindow) {
+			foreach (Window w in FindObjectsOfType<Window>()) {
+				if (w.parent == null) {
+					lastOpenedWindow = w;
+				}
+			}
+		}
+			
 		lastOpenedWindow.Toggle ();
 	}
 

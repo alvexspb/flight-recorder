@@ -87,7 +87,7 @@ public class OBJLoader
         List<Material> matlList = new List<Material>();
         FileInfo mtlFileInfo = new FileInfo(fn);
 		string baseFileName = GetFileNameWithoutExtension(fn);
-		Debug.Log (baseFileName);
+//		Debug.Log (baseFileName);
         string mtlFileDirectory = mtlFileInfo.Directory.FullName + "/";
         foreach (string ln in File.ReadAllLines(fn))
         {

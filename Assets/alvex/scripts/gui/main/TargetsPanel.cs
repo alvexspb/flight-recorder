@@ -3,17 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetsPanel : MonoBehaviour {
-	
-	static string TARGETS_COUNT = "TargetsCount";
-	static string TARGET_MODEL = "TargetModel";
-	static string TARGET_MARKERS = "TargetMarkers";
-	static string TARGET_TRAJECTORY = "TargetTrajectory";
-	static string TARGET_MODEL_CENTER = "TargetModelCenter";
-	static string TARGET_MODEL_ROTATION = "TargetModelRotation";
-	static string TARGET_MODEL_SCALE = "TargetModelScale";
-	static string X = "X";
-	static string Y = "Y";
-	static string Z = "Z";
 
 	public TargetWidget targetWidgetPrefab;
 	public Target targetPrefab;
@@ -33,31 +22,24 @@ public class TargetsPanel : MonoBehaviour {
 
 	void loadFromSavedSettings () {
 		
-		if (!PlayerPrefs.HasKey (TARGETS_COUNT)) {
+		if (!Store.Has(Settings.TARGETS_COUNT)) {
 			return;
 		}
 			
-		for (int i = 0; i < PlayerPrefs.GetInt (TARGETS_COUNT); i++) {
+		for (int i = 0; i < Store.loadInt(Settings.TARGETS_COUNT); i++) {
 			TargetDescription loaded = new TargetDescription ();
 
 			loaded.index = i;
-			loaded.model = PlayerPrefs.GetString (TARGET_MODEL + i);
-			loaded.markers = PlayerPrefs.GetString (TARGET_MARKERS + i);
-			loaded.trajectory = PlayerPrefs.GetString (TARGET_TRAJECTORY + i);
-			loaded.modelCenter = LoadVectorFromPlayerPrefs (TARGET_MODEL_CENTER, i);
-			loaded.modelRotation = LoadVectorFromPlayerPrefs (TARGET_MODEL_ROTATION, i);
-			loaded.modelScale = PlayerPrefs.GetFloat (TARGET_MODEL_SCALE + i);
+			loaded.model = Store.loadString (Settings.TARGET_MODEL, i);
+			loaded.markers = Store.loadString (Settings.TARGET_MARKERS, i);
+			loaded.trajectory = Store.loadString (Settings.TARGET_TRAJECTORY, i);
+			loaded.modelCenter = Store.loadVector (Settings.TARGET_MODEL_CENTER, i);
+			loaded.modelRotation = Store.loadVector (Settings.TARGET_MODEL_ROTATION, i);
+			loaded.modelScale = Store.loadFloat (Settings.TARGET_MODEL_SCALE, i);
+			loaded.showMarkers = Store.loadBoolean (Settings.TARGET_SHOW_MARKERS, i);
 
 			AddTarget (loaded);
 		}
-	}
-
-	Vector3 LoadVectorFromPlayerPrefs (string key, int i) {
-		return new Vector3(
-			PlayerPrefs.GetFloat(key + i + X),
-			PlayerPrefs.GetFloat(key + i + Y),
-			PlayerPrefs.GetFloat(key + i + Z)
-		);
 	}
 
 	void ApplyTargetSettings (TargetDescription targetDescription, Target target) {
@@ -67,6 +49,7 @@ public class TargetsPanel : MonoBehaviour {
 		target.Translate (targetDescription.modelCenter);
 		target.Rotate (targetDescription.modelRotation);
 		target.Scale (targetDescription.modelScale);
+		target.ShowMarkers (targetDescription.showMarkers);
 	}
 
 	public void EditTarget (TargetDescription targetDescription) {
@@ -89,27 +72,22 @@ public class TargetsPanel : MonoBehaviour {
 	}
 
 	public void SaveUserSettings () {
-		PlayerPrefs.SetInt (TARGETS_COUNT, targetDescriptions.Count);
+		Store.saveInt (Settings.TARGETS_COUNT, targetDescriptions.Count);
 
 		for (int i = 0; i < targetDescriptions.Count; i++) {
-			var desc = targetDescriptions [i];
-			PlayerPrefs.SetString (TARGET_MODEL + i, desc.model);
-			PlayerPrefs.SetString (TARGET_MARKERS + i, desc.markers);
-			PlayerPrefs.SetString (TARGET_TRAJECTORY + i, desc.trajectory);
-			SaveVectorToPlayerPrefs (TARGET_MODEL_CENTER + i, desc.modelCenter);
-			SaveVectorToPlayerPrefs (TARGET_MODEL_ROTATION + i, desc.modelRotation);
-			PlayerPrefs.SetFloat (TARGET_MODEL_SCALE + i, desc.modelScale);
+			TargetDescription desc = targetDescriptions [i]; 
+			Store.saveString (Settings.TARGET_MODEL, i, desc.model);
+			Store.saveString (Settings.TARGET_MARKERS, i, desc.markers);
+			Store.saveString (Settings.TARGET_TRAJECTORY, i, desc.trajectory);
+			Store.saveVector (Settings.TARGET_MODEL_CENTER, i, desc.modelCenter);
+			Store.saveVector (Settings.TARGET_MODEL_ROTATION, i, desc.modelRotation);
+			Store.saveFloat (Settings.TARGET_MODEL_SCALE, i, desc.modelScale);
+			Store.saveBoolean (Settings.TARGET_SHOW_MARKERS, i, desc.showMarkers);
 		}
 
 		PlayerPrefs.Save ();
 	}
-
-	void SaveVectorToPlayerPrefs (string key, Vector3 modelCenter) {
-		PlayerPrefs.SetFloat(key + X, modelCenter.x);
-		PlayerPrefs.SetFloat(key + Y, modelCenter.y);
-		PlayerPrefs.SetFloat(key + Z, modelCenter.z);
-	}
-
+		
 	TargetWidget NewWidget (TargetDescription targetDescription) {
 		TargetWidget targetWidget = Instantiate (targetWidgetPrefab);
 		targetWidget.transform.SetParent (transform);
@@ -118,14 +96,36 @@ public class TargetsPanel : MonoBehaviour {
 		return targetWidget;
 	}
 
-	Target NewTarget (TargetDescription targetDescription) {
+	Target NewTarget (TargetDescription desc) {
 		Target target = Instantiate (targetPrefab);
-		target.name = "Target" + targetDescription.index;
+		target.name = TargetName(desc);
 		target.transform.parent = targets.transform;
 
-		ApplyTargetSettings (targetDescription, target);
+		ApplyTargetSettings (desc, target);
 
 		launch.AddTarget (target);
 		return target;
+	}
+
+	void UpdateIndex (int i) {
+		TargetDescription desc = targetDescriptions [i];
+		desc.index = i;
+		desc.target.gameObject.name = TargetName (desc);
+		desc.targetWidget.SetTargetName (i);
+	}
+
+	public void DeleteTarget (TargetDescription desc) {
+		Destroy (desc.targetWidget.gameObject);
+		Destroy (desc.target.gameObject);
+		targetDescriptions.Remove (desc);
+		launch.DeleteTarget (desc.target);
+		for (int i = 0; i < targetDescriptions.Count; i++) {
+			UpdateIndex (i);
+		}
+		SaveUserSettings ();
+	}
+
+	string TargetName(TargetDescription desc) {
+		return "Target_" + desc.index;
 	}
 }

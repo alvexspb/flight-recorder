@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetDescription  {
-	
+
+	public bool showMarkers { get; set; }
+
 	public int index {get; set;}
 
 	public bool isNew {get; set;}

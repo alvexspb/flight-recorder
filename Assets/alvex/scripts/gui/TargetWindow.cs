@@ -13,52 +13,57 @@ public class TargetWindow : MonoBehaviour {
 	public VectorField modelRotation;
 	public Button saveButton;
 
-	TargetDescription targetDescription;
+	Toggle showMarkers;
+	TargetDescription desc;
 
 	void Start() {
 		saveButton.onClick.AddListener (save);
+		showMarkers = GetComponentInChildren<Toggle> ();
 	}
 
 	public void NewTarget() {
-		targetDescription = new TargetDescription ();
-		targetDescription.isNew = true;
+		desc = new TargetDescription ();
+		desc.isNew = true;
 		modelField.text = "";
 		markersField.text = "";
 		trajectoryFiled.text = "";
 		modelScaleField.text = "1";
 		modelCenter.AssignValues (Vector3.zero);
 		modelRotation.AssignValues (Vector3.zero);
-		targetDescription.index = FindObjectOfType<Launch> ().TargetCount ();
+		desc.index = FindObjectOfType<Launch> ().TargetCount ();
+		showMarkers.isOn = false;
 	}
 
 	public void EditTarget(TargetDescription targetDescription) {
-		this.targetDescription = targetDescription;
+		this.desc = targetDescription;
 		modelField.text = targetDescription.model;
 		markersField.text = targetDescription.markers;
 		trajectoryFiled.text = targetDescription.trajectory;
 		modelScaleField.text = "" + targetDescription.modelScale;
 		modelCenter.AssignValues(targetDescription.modelCenter);
 		modelRotation.AssignValues (targetDescription.modelRotation);
+		showMarkers.isOn = targetDescription.showMarkers;
 	}
 
 	void save () {
 
 		TargetsPanel targetsPanel = FindObjectOfType<TargetsPanel> ();
 		
-		targetDescription.model = modelField.text;
-		targetDescription.markers = markersField.text;
-		targetDescription.trajectory = trajectoryFiled.text;
-		targetDescription.modelRotation = modelRotation.GetValue ();
-		targetDescription.modelCenter = modelCenter.GetValue ();
-		targetDescription.modelScale = Utils.stringToFloat (modelScaleField.text);
+		desc.model = modelField.text;
+		desc.markers = markersField.text;
+		desc.trajectory = trajectoryFiled.text;
+		desc.modelRotation = modelRotation.GetValue ();
+		desc.modelCenter = modelCenter.GetValue ();
+		desc.modelScale = Utils.stringToFloat (modelScaleField.text);
+		desc.showMarkers = showMarkers.isOn;
 
-		if (targetDescription.isNew) {
-			targetsPanel.AddTarget (targetDescription);
+		if (desc.isNew) {
+			targetsPanel.AddTarget (desc);
 		} else {
-			targetsPanel.EditTarget (targetDescription);
+			targetsPanel.EditTarget (desc);
 		}
 
-		targetDescription.isNew = false;
+		desc.isNew = false;
 		targetsPanel.SaveUserSettings ();
 		GetComponentInParent<Window> ().HideWindow ();
 	}

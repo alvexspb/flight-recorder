@@ -33,6 +33,10 @@ public class Launch : MonoBehaviour {
 		targets.Add (target);
 	}
 
+	public void DeleteTarget(Target target) {
+		targets.Remove(target);
+	}
+
 	public void StartLaunch () {
 		startTime = Time.time;
 		startDate = DateTime.Now;
@@ -45,6 +49,7 @@ public class Launch : MonoBehaviour {
 		leftFrameIndex = 0;
 		//rightFrameIndex = 0;
 		lastCapturedFrame = -1;
+		lerpToTime = 0;
 		frameNumberField.GetComponent<InputField> ().text = "0";
 		ApplyTargetsState ();
 		ApplyCameraState();

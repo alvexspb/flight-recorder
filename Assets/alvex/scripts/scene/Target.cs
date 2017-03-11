@@ -18,14 +18,10 @@ public class Target : MonoBehaviour {
 	public void ApplyState (int index, float lerpTo) {
 		Vector3 pos = Utils.lerpPosition (positions, index, lerpTo);
 		transform.localPosition = Utils.asPosition(pos);
-		//targetPosition.vectorField.AssignValues (pos);
-
-		transform.localRotation = Utils.lerpRotation(rotations, index, lerpTo);
-		//targetRotation.vectorField.AssignValues (rad2deg (lerp (targetRotation.GetData)));
+		transform.localRotation = Utils.lerpRotation (rotations, index, lerpTo);
 	}
 
 	public void LoadModel(string path) {
-		
 		if (currentState.model == path) {
 			return;
 		}
@@ -42,8 +38,6 @@ public class Target : MonoBehaviour {
 		} catch (Exception e) {
 			Debug.Log (e);
 		}
-
-
 	}
 
 	public void LoadMarkers (string path) {
@@ -89,14 +83,24 @@ public class Target : MonoBehaviour {
 	}
 
 	public void Translate (Vector3 modelCenter) {
-		if (null != mesh) mesh.localPosition = modelCenter;
+		if (null != mesh) {
+			mesh.localPosition = modelCenter;
+		}
 	}
 
 	public void Rotate (Vector3 modelRotation) {
-		if (null != mesh) mesh.localEulerAngles = modelRotation;
+		if (null != mesh) {
+			mesh.localEulerAngles = modelRotation;
+		}
 	}
 
 	public void Scale (float scale) {
-		if (null != mesh) mesh.localScale = new Vector3 (scale, scale, scale);
+		if (null != mesh) {
+			mesh.localScale = new Vector3 (scale, scale, scale);
+		}
+	}
+
+	public void ShowMarkers (bool showMarkers) {
+		markers.gameObject.SetActive (showMarkers);
 	}
 }
