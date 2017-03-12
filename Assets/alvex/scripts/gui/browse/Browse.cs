@@ -9,6 +9,8 @@ public class Browse : MonoBehaviour {
 
 	protected InputField input;
 
+	public string extension;
+
 	void Start () {
 		InitButton ();
 		InitInput ();
@@ -54,7 +56,7 @@ public class Browse : MonoBehaviour {
 		BrowseFile browseFile = FindObjectOfType<BrowseFile> ();
 		Window browseWindow = browseFile.GetComponentInParent<Window> ();
 		browseWindow.ShowWindow ();
-		browseFile.Open (path, input);
+		browseFile.Open (path, input, extension);
 
 		Window parentWindow = GetComponentInParent<Window> ();
 		browseWindow.parent = parentWindow;

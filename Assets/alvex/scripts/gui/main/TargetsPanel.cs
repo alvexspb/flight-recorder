@@ -7,6 +7,7 @@ public class TargetsPanel : MonoBehaviour {
 	public TargetWidget targetWidgetPrefab;
 	public Target targetPrefab;
 	public GameObject targets;
+	public ConfirmDelete confirmDelete;
 
 	GameObject addButton;
 	Launch launch;
@@ -115,6 +116,12 @@ public class TargetsPanel : MonoBehaviour {
 	}
 
 	public void DeleteTarget (TargetDescription desc) {
+		confirmDelete.Show (GetComponentInParent<Window> (), delegate {
+			DoDelete (desc);
+		});
+	}
+
+	void DoDelete(TargetDescription desc) {
 		Destroy (desc.targetWidget.gameObject);
 		Destroy (desc.target.gameObject);
 		targetDescriptions.Remove (desc);

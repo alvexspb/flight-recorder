@@ -10,6 +10,8 @@ public class Launch : MonoBehaviour {
 	TrackingCamera trackingCamera;
 
 	public InputField frameNumberField;
+	public Text focus;
+	public Text distance;
 
 	public float fps = 10;
 	public bool linearInterpolation = true;
@@ -21,9 +23,13 @@ public class Launch : MonoBehaviour {
 	//int rightFrameIndex;
 	int lastCapturedFrame = -1;
 	DateTime startDate;
+	string focusText;
+	string distanceText;
 
 	void Start() {
 		trackingCamera = FindObjectOfType<TrackingCamera> ();
+		focusText = focus.text;
+		distance = distance.text;
 	}
 
 	public void AddTarget(Target target) {
@@ -91,6 +97,7 @@ public class Launch : MonoBehaviour {
 
 	public void ApplyCameraState() {
 		trackingCamera.ApplyState (leftFrameIndex, lerpToTime);
+	//	focus = 
 	}
 
 	void ApplyTargetsState () {

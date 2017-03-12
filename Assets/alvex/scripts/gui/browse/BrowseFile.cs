@@ -24,34 +24,38 @@ public class BrowseFile : MonoBehaviour {
 		GetComponentInParent<Window> ().HideWindow ();
 	}
 
-	public void Open(string path, InputField input) {
+	public void Open(string path, InputField input, string extension) {
 		this.input = input;
-		FillDirectory (path);
+		FillDirectory (path, extension);
 	}
 
-	void AddFolder (string name, string path){
+	void AddFolder (string name, string path, string extension){
 		GameObject parentFolder = Instantiate (folderPrefab);
 		parentFolder.GetComponentInChildren<Text> ().text = name;
 		parentFolder.GetComponent<Button> ().onClick.AddListener (delegate {
-			FillDirectory (path);
+			FillDirectory (path, extension);
 		});
 		parentFolder.transform.SetParent (filelist);
 	}
 
-	void FillDirectory (string path) {
+	void FillDirectory (string path, string extension) {
 		
 		selected.text = normalizePath(path);
 		Utils.DestroyChildren (filelist.gameObject);
 
-		AddFolder ("..", path + "/..");
+		AddFolder ("..", path + "/..", extension);
 
 		DirectoryInfo dir = new DirectoryInfo (path);
 
 		foreach (DirectoryInfo i in dir.GetDirectories ()) {
-			AddFolder (i.Name, i.FullName);
+			AddFolder (i.Name, i.FullName, extension);
 		}
 
 		foreach (FileInfo i in dir.GetFiles ()) {
+			if (!i.Name.EndsWith ("." + extension)) {
+				continue;
+			}
+
 			GameObject file = Instantiate(filePrefab);
 			file.GetComponentInChildren<Text> ().text = i.Name;
 			file.GetComponent<Button> ().onClick.AddListener (delegate { click(i.FullName); });
