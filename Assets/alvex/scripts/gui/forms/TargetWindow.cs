@@ -40,7 +40,7 @@ public class TargetWindow : MonoBehaviour {
 		markersField.text = targetDescription.markers;
 		trajectoryFiled.text = targetDescription.trajectory;
 		modelScaleField.text = "" + targetDescription.modelScale;
-		modelCenter.AssignValues(targetDescription.modelCenter);
+		modelCenter.AssignValues(-targetDescription.modelCenter);
 		modelRotation.AssignValues (targetDescription.modelRotation);
 		showMarkers.isOn = targetDescription.showMarkers;
 	}
@@ -53,7 +53,7 @@ public class TargetWindow : MonoBehaviour {
 		desc.markers = markersField.text;
 		desc.trajectory = trajectoryFiled.text;
 		desc.modelRotation = modelRotation.GetValue ();
-		desc.modelCenter = modelCenter.GetValue ();
+		desc.modelCenter = -modelCenter.GetValue ();
 		desc.modelScale = Utils.stringToFloat (modelScaleField.text);
 		desc.showMarkers = showMarkers.isOn;
 
