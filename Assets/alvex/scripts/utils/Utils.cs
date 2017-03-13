@@ -10,13 +10,13 @@ public class Utils {
 		return (float) value;
 	}
 		
-	public static Vector3 lerpPosition(List<Vector3> positions, int index, float lerpTo) {
+	public static Vector3 lerp(List<Vector3> positions, int index, float lerpTo) {
 		Vector3 left = positions [index];
 		Vector3 right = positions [index + 1];
 		return Vector3.Lerp (left, index + 1 < positions.Count ? right : left, lerpTo);
 	}
 
-	public static Quaternion lerpRotation(List<Vector3> rotatrions, int index, float lerpTo) {
+	public static Quaternion lerpAngles(List<Vector3> rotatrions, int index, float lerpTo) {
 		Quaternion left = Quaternion.Euler (asAngles(rotatrions [index]));
 		Quaternion right = Quaternion.Euler (asAngles(rotatrions [index + 1]));
 		return Quaternion.Lerp (left, index + 1 < rotatrions.Count ? right : left, lerpTo);

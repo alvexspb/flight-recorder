@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 
 public class TrackingCamera: MonoBehaviour {
@@ -9,16 +10,27 @@ public class TrackingCamera: MonoBehaviour {
 	List<Vector3> rotations;
 	List<Vector3> settings;
 
-	public void ApplyState (int index, float lerpTo) {
+	public Text focus;
+	public Text distance;
 
-		Vector3 pos = Utils.lerpPosition (positions, index, lerpTo);
-		//cameraPosition.vectorField.AssignValues (pos);
+	string focusText;
+	string distanceText;
+
+	void Start() {
+		focusText = focus.text;
+		distanceText = distance.text;
+	}
+
+	public void ApplyState (int index, float lerpTo) {
+		Vector3 pos = Utils.lerp (positions, index, lerpTo);
 		transform.localPosition = Utils.asPosition (pos);
 
-		//cameraRotation.vectorField.AssignValues (rad2deg (lerp (cameraRotation.GetData)));
-		transform.localRotation = Utils.lerpRotation(rotations, index, lerpTo);
+		transform.localRotation = Utils.lerpAngles(rotations, index, lerpTo);
 
-		GetComponentInChildren<Camera>().fieldOfView = Utils.rad2deg(Utils.lerpPosition(settings, index, lerpTo)).x;
+		Vector3 cameraSettings = Utils.lerp (settings, index, lerpTo);
+		GetComponentInChildren<Camera>().fieldOfView = Utils.rad2deg(cameraSettings).x;
+		focus.text = focusText + " " + cameraSettings.y;
+		distance.text = distanceText + " " + cameraSettings.z;
 	}
 
 	public void LoadCamera(string path) {

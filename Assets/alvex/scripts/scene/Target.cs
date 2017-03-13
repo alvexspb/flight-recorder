@@ -16,9 +16,9 @@ public class Target : MonoBehaviour {
 	TargetDescription currentState = new TargetDescription ();
 
 	public void ApplyState (int index, float lerpTo) {
-		Vector3 pos = Utils.lerpPosition (positions, index, lerpTo);
+		Vector3 pos = Utils.lerp (positions, index, lerpTo);
 		transform.localPosition = Utils.asPosition(pos);
-		transform.localRotation = Utils.lerpRotation (rotations, index, lerpTo);
+		transform.localRotation = Utils.lerpAngles (rotations, index, lerpTo);
 	}
 
 	public void LoadModel(string path) {

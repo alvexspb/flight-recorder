@@ -156,7 +156,7 @@ Material:
       second: 1.7931035
     - first:
         name: _FresnelScale
-      second: 0.53
+      second: 0.15
     - first:
         name: _GerstnerIntensity
       second: 1.6714286
@@ -247,7 +247,7 @@ Material:
       second: {r: 4.5, g: 75, b: 300, a: 1}
     - first:
         name: _Foam
-      second: {r: 0.42666668, g: 0.48666668, b: 0, a: 0}
+      second: {r: 0.2, g: -0.04, b: 0, a: 0}
     - first:
         name: _FoamWaveParams
       second: {r: 0, g: 0.24918434, b: 3.3395782, a: 1}

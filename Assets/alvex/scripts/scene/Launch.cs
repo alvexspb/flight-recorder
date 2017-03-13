@@ -10,8 +10,7 @@ public class Launch : MonoBehaviour {
 	TrackingCamera trackingCamera;
 
 	public InputField frameNumberField;
-	public Text focus;
-	public Text distance;
+
 
 	public float fps = 10;
 	public bool linearInterpolation = true;
@@ -28,8 +27,6 @@ public class Launch : MonoBehaviour {
 
 	void Start() {
 		trackingCamera = FindObjectOfType<TrackingCamera> ();
-		focusText = focus.text;
-		distance = distance.text;
 	}
 
 	public void AddTarget(Target target) {
@@ -46,14 +43,12 @@ public class Launch : MonoBehaviour {
 	public void StartLaunch () {
 		startTime = Time.time;
 		startDate = DateTime.Now;
-		//FindObjectOfType<Menu>().setVisible (false);
 	}
 
 	public void StopLaunch () {
 		Time.timeScale = 1;
 		startTime = 0;
 		leftFrameIndex = 0;
-		//rightFrameIndex = 0;
 		lastCapturedFrame = -1;
 		lerpToTime = 0;
 		frameNumberField.GetComponent<InputField> ().text = "0";
@@ -71,13 +66,12 @@ public class Launch : MonoBehaviour {
 			return;
 
 		CalcTime ();
-		try {
 
+		try {
 			ApplyTargetsState ();
 			ApplyCameraState();
 			SaveFrame();
 		} catch {
-//			FindObjectOfType<Menu>().setVisible (true);
 			StopLaunch ();
 		}
 	}
@@ -90,14 +84,11 @@ public class Launch : MonoBehaviour {
 		if (Time.timeScale > 0)
 			frameNumberField.GetComponent<InputField> ().text = "" + leftFrameIndex;
 
-		//rightFrameIndex = Mathf.CeilToInt (t * fps);
-
 		lerpToTime = linearInterpolation ? t * fps - (float)leftFrameIndex : 0;
 	}
 
 	public void ApplyCameraState() {
 		trackingCamera.ApplyState (leftFrameIndex, lerpToTime);
-	//	focus = 
 	}
 
 	void ApplyTargetsState () {
@@ -120,7 +111,6 @@ public class Launch : MonoBehaviour {
 
 	public void EnableRecording (bool enable) {
 		recording = enable;
-		//Time.captureFramerate = enable ? (int) fps : 0;
 	}
 
 	void SaveFrame () {

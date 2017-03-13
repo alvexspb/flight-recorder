@@ -182,6 +182,7 @@ MonoBehaviour:
   targetPrefab: {fileID: 114854139707528696, guid: 140f506a97060b74e87036c65435a1db,
     type: 2}
   targets: {fileID: 0}
+  confirmDelete: {fileID: 0}
 --- !u!114 &114693754981459204
 MonoBehaviour:
   m_ObjectHideFlags: 1

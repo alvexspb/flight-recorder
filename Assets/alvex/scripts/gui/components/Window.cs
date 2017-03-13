@@ -14,7 +14,7 @@ public class Window : MonoBehaviour {
 	}
 
 	void Update () {
-		if(null == parent && Input.GetKeyDown(KeyCode.Escape)) {
+		if(null == parent && Input.GetKeyDown(KeyCode.Escape)) { 
 			ToggleLastOpenedWindow ();
 		}
 	}
