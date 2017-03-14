@@ -16,6 +16,10 @@ public class Target : MonoBehaviour {
 	TargetDescription currentState = new TargetDescription ();
 
 	public void ApplyState (int index, float lerpTo) {
+		if (positions == null || rotations == null) {
+			return;
+		}
+
 		Vector3 pos = Utils.lerp (positions, index, lerpTo);
 		transform.localPosition = Utils.asPosition(pos);
 		transform.localRotation = Utils.lerpAngles (rotations, index, lerpTo);
@@ -60,7 +64,7 @@ public class Target : MonoBehaviour {
 	}
 
 	public void LoadTrajectory (string path) {
-		if (currentState.trajectory == path) {
+		if (currentState.trajectory == path || path == "") {
 			return;
 		}
 

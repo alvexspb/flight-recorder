@@ -10,8 +10,6 @@ public class Launch : MonoBehaviour {
 	TrackingCamera trackingCamera;
 
 	public InputField frameNumberField;
-
-
 	public float fps = 10;
 	public bool linearInterpolation = true;
 	public bool recording = false;
@@ -19,7 +17,6 @@ public class Launch : MonoBehaviour {
 	float startTime;
 	float lerpToTime; 
 	int leftFrameIndex;
-	//int rightFrameIndex;
 	int lastCapturedFrame = -1;
 	DateTime startDate;
 	string focusText;
@@ -71,7 +68,8 @@ public class Launch : MonoBehaviour {
 			ApplyTargetsState ();
 			ApplyCameraState();
 			SaveFrame();
-		} catch {
+		} catch (Exception e) {
+			Debug.Log (e);
 			StopLaunch ();
 		}
 	}

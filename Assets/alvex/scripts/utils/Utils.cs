@@ -10,24 +10,28 @@ public class Utils {
 		return (float) value;
 	}
 		
-	public static Vector3 lerp(List<Vector3> positions, int index, float lerpTo) {
-		Vector3 left = positions [index];
-		Vector3 right = positions [index + 1];
-		return Vector3.Lerp (left, index + 1 < positions.Count ? right : left, lerpTo);
+	public static Vector3 lerp(List<Vector3> points, int index, float lerpTo) {
+		Vector3 left = points [index];
+		if (index + 1 == points.Count) { 
+			return left;
+		} 
+		return Vector3.Lerp (left, points [index + 1], lerpTo);
 	}
 
 	public static Quaternion lerpAngles(List<Vector3> rotatrions, int index, float lerpTo) {
-		Quaternion left = Quaternion.Euler (asAngles(rotatrions [index]));
-		Quaternion right = Quaternion.Euler (asAngles(rotatrions [index + 1]));
-		return Quaternion.Lerp (left, index + 1 < rotatrions.Count ? right : left, lerpTo);
+		Quaternion left = asQuaternion(rotatrions [index]);
+		if (index + 1 == rotatrions.Count) { 
+			return left;
+		} 
+		return Quaternion.Lerp (left, asQuaternion(rotatrions [index + 1]), lerpTo);
 	}
 
 	public static Vector3 asPosition (Vector3 pos) {
 		return new Vector3 (pos.z, pos.y, pos.x);
 	}
 
-	public static Vector3 asAngles (Vector3 rot) {
-		return rad2deg(new Vector3 (-rot.y, rot.x, -rot.z));
+	public static Quaternion asQuaternion (Vector3 rot) {
+		return Quaternion.Euler(rad2deg(new Vector3 (-rot.y, rot.x, -rot.z)));
 	}
 
 	public static Vector3 rad2deg (Vector3 v) {

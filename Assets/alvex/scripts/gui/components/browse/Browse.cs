@@ -48,9 +48,9 @@ public class Browse : MonoBehaviour {
 		
 	void browse () {
 		string path = Application.dataPath;
-		//#if UNITY_EDITOR
+		#if UNITY_EDITOR
 		path += "/..";
-		//#endif
+		#endif
 		path += "/../data/";
 
 		BrowseFile browseFile = FindObjectOfType<BrowseFile> ();
