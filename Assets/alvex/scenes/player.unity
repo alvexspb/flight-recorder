@@ -929,12 +929,12 @@ Prefab:
     - target: {fileID: 224991741214186012, guid: 610d6de1caa1bc34c8f3021af37c9992,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224991741214186012, guid: 610d6de1caa1bc34c8f3021af37c9992,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224991741214186012, guid: 610d6de1caa1bc34c8f3021af37c9992,
         type: 2}
