@@ -55,6 +55,7 @@ public class Target : MonoBehaviour {
 			GameObject marker = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 			Destroy (marker.GetComponent<Collider> ());
 			marker.transform.parent = markers;
+			marker.transform.localScale = new Vector3 (floats[6], floats[6], floats[6]);
 			marker.transform.localPosition = new Vector3(floats[2], floats[1], floats[0]);
 			marker.GetComponent<MeshRenderer> ().material.shader = Shader.Find ("Unlit/Color");
 			marker.GetComponent<MeshRenderer> ().material.color = new Color (floats [3], floats [4], floats [5]);
